@@ -1,14 +1,3 @@
-// admin database
-dbAdmin = db.getSiblingDB("admin");
-dbAdmin.createUser({
-  user: "admin",
-  pwd: "VeryStrongPassword",
-  roles: [
-    { role: "userAdminAnyDatabase", db: "admin" },
-    { role: "readWriteAnyDatabase", db: "admin" }
-  ],
-});
-
 // student database
 db = db.getSiblingDB("student_db");
 db.createUser({
@@ -21,6 +10,3 @@ db.createUser({
 });
 
 db.createCollection("student_collection", { capped: false });
-
-// Authenticate user on the student database
-db.auth("express_student_service", "express_student_password");

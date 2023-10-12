@@ -18,4 +18,12 @@ export class StudentController {
 
         res.send("created");
     }
+
+    async findStudentBy(req: Request, res: Response, next: NextFunction) {
+        var id = req.params.id;
+        
+        var result = await this.studentService.findStudentBy(id);
+        
+        res.json(result);
+    }
 }

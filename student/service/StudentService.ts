@@ -11,6 +11,10 @@ export class StudentService {
     addStudent ( student: StudentInterface) {
         this.studentRepository.addStudent(student);
     }
+
+    async findStudentBy( id: string ) {
+        return await this.studentRepository.findStudentById(id);
+    }
         
 
 }

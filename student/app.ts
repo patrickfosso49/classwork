@@ -7,6 +7,7 @@ import { join } from 'path';
 require('dotenv').config();
 
 import mongoose from 'mongoose';
+import { exit } from 'process';
 import { StudentController } from './controller/StudentController';
 import { student } from './model/Student';
 import { StudentRepository } from './repository/StudentRepository';
@@ -63,13 +64,15 @@ mongoose
       });
       
           console.log('Connected to MongoDB');
-          // Start the server after successfully connecting to the database
+
           app.listen(3000, () => {
             console.log('Server is running on port 3000');
           });
         })
   .catch((error) => {
+
     console.error('Error connecting to MongoDB:', error);
+    exit(1);
   });
 
 

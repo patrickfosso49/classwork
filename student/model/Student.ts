@@ -1,7 +1,9 @@
+import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 import { StudentInterface } from "./StudentInterface";
 
 export interface IStudent {
+  _id: ObjectId,
   firstName: string,
   lastName: string,
   email: string,
@@ -28,6 +30,10 @@ const schema = mongoose.Schema;
         type: String,
         required: true
       }
+      
+    },
+    {
+      collection: "student_collection"
     });
 
 export type Student = StudentInterface & mongoose.Document;

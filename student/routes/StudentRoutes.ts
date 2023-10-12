@@ -12,11 +12,16 @@ export class StudentRoutes {
 
   #initializeRoutes() {
     this.router.post('/', this.#createStudent.bind(this));
+    this.router.get('/:id', this.#findStudentById.bind(this));
   }
 
   #createStudent(req: Request, res: Response, next: NextFunction) {
     // Delegate the request handling to the controller
     this.studentController.addStudent(req, res, next);
+  }
+
+  #findStudentById(req: Request, res: Response, next: NextFunction) {
+    this.studentController.findStudentBy(req, res, next);
   }
 
   public getRouter(): Router {

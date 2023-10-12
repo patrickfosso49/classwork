@@ -15,8 +15,8 @@ export class StudentRepository {
         return this.student.find();
     }
 
-    findStudentById(uuid: string) {
-    return this.student.findOne({ uuid });
+    async findStudentById(id: string) {
+    return await this.student.findById(id);
   }
 
 }
