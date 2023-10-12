@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  teacher:
+    container_name: postgresql_db
+    build:
+      context: ./database/postgresql
+
+    volumes:
+      - data:var/lib/postgresql/data:rw
+
+    ports:
+          - "5432:5432"

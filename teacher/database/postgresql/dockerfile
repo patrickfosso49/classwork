@@ -1,0 +1,9 @@
+FROM postgres
+
+ENV POSTGRES_DB teacher_db
+
+ENV POSTGRES_USER spring_boot_teacher_service
+
+ENV POSTGRES_PASSWORD ejfkla_d21qekjdf.jfkskkfj
+
+COPY init-script.sql /docker-entrypoint-initdb.d/init-script.sql
