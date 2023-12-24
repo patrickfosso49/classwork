@@ -2,12 +2,12 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { StudentController } from '../controller/StudentController';
 
 export class StudentRoutes {
-	private readonly router : Router
+  private readonly router: Router
   constructor(private readonly studentController: StudentController,
-		){
-			this.router = Router();
-    		this.#initializeRoutes();
-	}
+  ) {
+    this.router = Router();
+    this.#initializeRoutes();
+  }
 
 
   #initializeRoutes() {

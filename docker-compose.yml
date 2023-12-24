@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  mongodb:
+    container_name: "mongodb"
+    image: mongo:5.0.5
+    hostname: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: kjlskueiw.jdfklsieifs8_jsqqkdjfs321A
+    volumes:
+      - ./student/database/mongodb/initdb.d:/docker-entrypoint-initdb.d
+      - ./student/database/mongodb/data/db:/data/db
+    ports:
+      - 27017:27017
+  
+  express_student_service:
+    container_name: "express_student_service"
+    image: student-service:2.0.0
+    build:
+      context: ./student
+      dockerfile: dockerfile
+    
+    hostname: express_student_service
+    depends_on:
+      - mongodb

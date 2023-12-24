@@ -1,0 +1,4 @@
+student/database/mongodb/data/
+student/node_modules/
+*.md
+.gitignore

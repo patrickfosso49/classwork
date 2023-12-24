@@ -5,7 +5,7 @@ import { StudentService } from "../service/StudentService";
 
 export class StudentController {
 
-    constructor(private readonly studentService : StudentService) {
+    constructor(private readonly studentService: StudentService) {
     }
 
 
@@ -13,17 +13,18 @@ export class StudentController {
     addStudent(req: Request<{}, {}, StudentInterface>, res: Response, next: NextFunction) {
 
         var student: StudentInterface = req.body;
-        
+
         this.studentService.addStudent(student);
 
         res.send("created");
+
     }
 
     async findStudentBy(req: Request, res: Response, next: NextFunction) {
         var id = req.params.id;
-        
+
         var result = await this.studentService.findStudentBy(id);
-        
+
         res.json(result);
     }
 }
