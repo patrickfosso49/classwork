@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: student-db-service
+spec:
+  selector:
+    app: student-db
+    tier: backend
+  ports:
+    - port: 27017
+      targetPort: 27017
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: student-db-config
+  labels:
+    phase: dev
+    environment: dev
+    tier: backend
+data:
+  MONGO_INITDB_ROOT_USERNAME: root
+  MONGO_INITDB_ROOT_PASSWORD: kjlskueiw.jdfklsieifs8_jsqqkdjfs321A
+  init-mongo.js: |
+    db = db.getSiblingDB("student_db");
+    db.createUser({
+    user: "express_student_service",
+    pwd: "express_student_password",
+    roles: [
+      { role: "readWrite", db: "student_db" },
+      { role: "userAdmin", db: "student_db" },
+    ],
+    });
+    db.createCollection("student_collection", { capped: false });
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: student-db-secret
+data:
+  MONGO_INITDB_ROOT_USERNAME: cm9vdA==
+  MONGO_INITDB_ROOT_PASSWORD: a2psc2t1ZWl3LmpkZmtsc2llaWZzOF9qc3Fxa2RqZnMzMjFB
+  init-mongo.js: |
+    ZGIgPSBkYi5nZXRTaWJsaW5nREIoInN0dWRlbnRfZGIiKTsgZGIuY3JlYXRlVXNlcih7IHVzZXI6
+    ICJleHByZXNzX3N0dWRlbnRfc2VydmljZSIsIHB3ZDogImV4cHJlc3Nfc3R1ZGVudF9wYXNzd29y
+    ZCIsIHJvbGVzOiBbeyByb2xlOiAicmVhZFdyaXRlIiwgZGI6ICJzdHVkZW50X2RiIiB9LHsgcm9s
+    ZTogInVzZXJBZG1pbiIsIGRiOiAic3R1ZGVudF9kYiIgfSxdLH0pO2RiLmNyZWF0ZUNvbGxlY3Rp
+    b24oInN0dWRlbnRfY29sbGVjdGlvbiIsIHsgY2FwcGVkOiBmYWxzZSB9KTs=
+  .env: |
+    UE9SVD0zMDAwCgpDT05ORUNUSU9OX1NUUklORz1tb25nb2RiOi8vZXhwcmVzc19zdHVkZW50X3Nl
+    cnZpY2U6ZXhwcmVzc19zdHVkZW50X3Bhc3N3b3JkQG1vbmdvZGI6MjcwMTcvc3R1ZGVudF9kYgpT
+    VFVERU5UX0FQSV9FTkRQT0lOVD1odHRwOi8vbG9jYWxob3N0OjMwMDA=
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-db-deployment
+  labels:
+    phase: dev
+    environment: dev
+    app: student-db
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: student-db
+      tier: backend
+  template:
+    metadata:
+      labels:
+        phase: dev
+        environment: dev
+        app: student-db
+        tier: backend
+    spec:
+      containers:
+        - name: student-db-container
+          image: mongo:5.0.5
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: student-db-secret
+                  key: MONGO_INIT_DB_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: student-db-secret
+                  key: MONGO_INITDB_ROOT_PASSWORD
+          ports:
+            - containerPort: 27017
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: student-db-data
+              mountPath: /data/db
+            - name: student-db-secret
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: student-db-data
+          emptyDir: {}
+        - name: student-db-secret
+          secret:
+            secretName: student-db-secret
+            items:
+              - key: init-mongo.js
+                path: init-mongo.js

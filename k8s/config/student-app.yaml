@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-app-deployment
+  labels:
+    phase: dev
+    environment: dev
+    app: student-app
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: student-app
+      environment: dev
+      phase: dev
+  template:
+    metadata:
+      labels:
+        app: student-app
+        phase: dev
+        tier: backend
+        environment: dev
+    spec:
+      containers:
+        - name: student-app-container
+          image: student-service:2.0.0
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+
+          volumeMounts:
+            - name: student-app-secrets
+              mountPath: /config
+              readOnly: true
+      volumes:
+        - name: student-app-secrets
+          secret:
+            secretName: student-db-secret
+            items:
+              - key: .env
+                path: .env

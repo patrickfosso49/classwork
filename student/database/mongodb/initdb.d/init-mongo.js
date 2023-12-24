@@ -5,7 +5,7 @@ db.createUser({
   pwd: "express_student_password",
   roles: [
     { role: "readWrite", db: "student_db" },
-    { role: "userAdmin", db: "student_db" }
+    { role: "userAdmin", db: "student_db" },
   ],
 });
 
