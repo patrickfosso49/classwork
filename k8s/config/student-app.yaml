@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: student-app-container
-          image: student-service:2.0.0
+          image: student-service:1.0.0
           resources:
             limits:
               memory: "128Mi"

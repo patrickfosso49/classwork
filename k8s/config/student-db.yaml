@@ -83,7 +83,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: student-db-secret
-                  key: MONGO_INIT_DB_ROOT_USERNAME
+                  key: MONGO_INITDB_ROOT_USERNAME
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:

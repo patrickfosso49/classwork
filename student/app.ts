@@ -62,6 +62,7 @@ mongoose
       res.status(err.status || 500);
       console.log(err);
       res.render('error');
+      console.log(process.env);
     });
 
     console.log('Connected to MongoDB');
